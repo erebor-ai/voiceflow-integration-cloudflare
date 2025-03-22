@@ -1,4 +1,4 @@
-// app/routes/qpi.voiceflow.tsx
+// app/routes/api.voiceflow.tsx
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { shopify } from "../shopify.server";
 import db from "../db.server";
