@@ -11,5 +11,9 @@
     "upload_source_maps": false,
     "compatibility_flags": [
       "nodejs_compat_v2"
-    ]
+    ],
+    "vars": {
+      "SHOPIFY_APP_URL": "https://shopify-cloudflare-workers-graw.chris-d2b.workers.dev",
+      "SCOPES": "reads_products"
+    }
   }
