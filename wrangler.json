@@ -14,6 +14,6 @@
     ],
     "vars": {
       "SHOPIFY_APP_URL": "https://shopify-cloudflare-workers-graw.chris-d2b.workers.dev",
-      "SCOPES": "reads_products"
+      "SCOPES": "read_products"
     }
   }
