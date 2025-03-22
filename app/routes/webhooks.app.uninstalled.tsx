@@ -1,6 +1,6 @@
 // app/routes/webhooks/app.uninstalled.tsx
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { authenticate } from "../shopify.server";
+import { shopify } from "../shopify.server";
 import { data } from "@remix-run/node"
 import db from "../db.server";
 
@@ -9,14 +9,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     return data(JSON.stringify({error: "Method not allowed"}), {status: 405, headers: {'Content-Type': 'application/json'}});
 };
 
-export const action: ActionFunction = async ({ request }) => {
-  const { topic, shop } = await authenticate.webhook(request);
+export const action: ActionFunction = async ({ request, context }) => {
+  const { topic, shop } = await shopify(context).authenticate.webhook(request);
 
   switch (topic) {
     case "APP_UNINSTALLED":
       try {
         // Delete the client's Voiceflow API key from the database
-        await db.client.deleteMany({ where: { shopDomain: shop } });
+        await db(context.cloudflare.env.DATABASE_URL).client.deleteMany({ where: { shopDomain: shop } });
 
         // We might also want to perform other cleanup tasks here,
         // such as deleting any stored session data etc.

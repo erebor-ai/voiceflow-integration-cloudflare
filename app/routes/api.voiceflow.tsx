@@ -1,25 +1,9 @@
 // app/routes/qpi.voiceflow.tsx
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { authenticate } from "../shopify.server";
+import { shopify } from "../shopify.server";
 import db from "../db.server";
 import { z } from "zod";
 
-// Simple in-memory rate limiter
-const RATE_LIMIT = {
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit to 100 requests per window
-  store: new Map<string, { count: number; resetTime: number }>()
-};
-
-// Cleanup expired entries periodically
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of RATE_LIMIT.store.entries()) {
-    if (now > value.resetTime) {
-      RATE_LIMIT.store.delete(key);
-    }
-  }
-}, 60000); // Clean up every minute
 
 // Define a Zod schema for the request data
 const requestDataSchema = z.object({
@@ -47,14 +31,14 @@ const requestDataSchema = z.object({
  *          - 500: Unexpected error with error details.
  */
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   try {
       // Allow GET requests for checking conversation state
       const url = new URL(request.url);
       const action = url.searchParams.get("action");
 
       if (action === "checkConversationState") {
-          const { session } = await authenticate.public.appProxy(request);
+          const { session } = await shopify(context).authenticate.public.appProxy(request);
           if (!session) {
               return Response.json({ error: "Unauthorized" }, { status: 401, headers: { 'Content-Type': 'application/json' } });
           }
@@ -69,7 +53,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           }
 
           // Get Voiceflow API key
-          const client = await db.client.findUnique({
+          const client = await db(context.cloudflare.env.DATABASE_URL).client.findUnique({
               where: { shopDomain: shopDomain },
           });
 
@@ -170,7 +154,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   /**
    * Endpoint to update a user's variables in Voiceflow.
    *
-   * This endpoint is rate-limited to 100 requests per 15 minutes per shop.
+* Endpoint to update a user's variables in Voiceflow.
    * It accepts a POST request with the following JSON body:
    *  - `userId`: The ID of the user in Voiceflow.
    *  - `viewedProductData`: The data of the viewed product, if any.
@@ -182,34 +166,14 @@ export const loader: LoaderFunction = async ({ request }) => {
    * @param request The Remix request object.
    * @returns A response from the Voiceflow API.
    */
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, context }) => {
   try {
     // Get shop domain from headers or URL for rate limiting
     const url = new URL(request.url);
     const shopDomain = url.searchParams.get('shop') || 'unknown-shop';
     
-    // Apply rate limiting
-    const now = Date.now();
-    const resetTime = now + RATE_LIMIT.windowMs;
-    
-    let clientData = RATE_LIMIT.store.get(shopDomain);
-    if (!clientData) {
-      clientData = { count: 0, resetTime };
-      RATE_LIMIT.store.set(shopDomain, clientData);
-    } else if (now > clientData.resetTime) {
-      // Reset if window expired
-      clientData.count = 0;
-      clientData.resetTime = resetTime;
-    }
-    
-    // Increment counter and check limit
-    clientData.count++;
-    if (clientData.count > RATE_LIMIT.max) {
-      return Response.json({ error: "Too many requests, please try again later." }, { status: 429 });
-    }
-    
     // Authenticate the request as coming from Shopify
-    const { session } = await authenticate.public.appProxy(request);
+    const { session } = await shopify(context).authenticate.public.appProxy(request);
     if (!session) {
       console.error("Authentication failed: No session found.");
       return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -229,7 +193,7 @@ export const action: ActionFunction = async ({ request }) => {
     }
     
     // Retrieve the Voiceflow API key for the store
-    const client = await db.client.findUnique({
+    const client = await db(context.cloudflare.env.DATABASE_URL).client.findUnique({
       where: { shopDomain: storeShopDomain },
     });
 
