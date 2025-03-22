@@ -9,7 +9,6 @@ import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prism
 import prisma from "./db.server";
 import type { AppLoadContext } from "@remix-run/node";
 
-
 export const shopify = (context: AppLoadContext) => shopifyApp({
   apiKey: context.cloudflare.env.SHOPIFY_API_KEY,
   apiSecretKey: context.cloudflare.env.SHOPIFY_API_SECRET || "",
@@ -34,9 +33,9 @@ export const shopify = (context: AppLoadContext) => shopifyApp({
     unstable_newEmbeddedAuthStrategy: true,
     removeRest: true,
   },
-  ...(process.env.SHOP_CUSTOM_DOMAIN
-    ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
-    : {}),
+...(process.env.SHOP_CUSTOM_DOMAIN
+? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
+: {}),
 });
 
 export default shopify;
