@@ -1,5 +1,5 @@
 {
-  "include": ["env.d.ts", "**/*.ts", "**/*.tsx", "scripts/delete-client.js", "scripts/list-clients.js", "scripts/add-client.js"],
+  "include": ["env.d.ts", "**/*.ts", "**/*.tsx", "scripts/delete-client.js", "scripts/list-clients.js", "scripts/add-client.js", "remix.env.d.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "strict": true,
