@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "b69474848d669e48d510363b5715e15c"
-application_url = "https://radar-breakfast-smithsonian-etc.trycloudflare.com"
+application_url = "https://shopify-cloudflare-workers-graw.chris-d2b.workers.dev"
 embedded = true
 name = "GRAW AI - Chatbot Integration"
 handle = "graw-ai-chatbot-integration"
@@ -27,9 +27,9 @@ scopes = "read_products"
 
 [auth]
 redirect_urls = [
-  "https://radar-breakfast-smithsonian-etc.trycloudflare.com/auth/callback",
-  "https://radar-breakfast-smithsonian-etc.trycloudflare.com/auth/shopify/callback",
-  "https://radar-breakfast-smithsonian-etc.trycloudflare.com/api/auth/callback"
+  "https://shopify-cloudflare-workers-graw.chris-d2b.workers.dev/auth/callback",
+  "https://shopify-cloudflare-workers-graw.chris-d2b.workers.dev/auth/shopify/callback",
+  "https://shopify-cloudflare-workers-graw.chris-d2b.workers.dev/api/auth/callback"
 ]
 
 [pos]
