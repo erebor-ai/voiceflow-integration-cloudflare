@@ -81,6 +81,10 @@ export default defineConfig({
   },
   build: {
     assetsInlineLimit: 0,
+    minify: true,
+  },
+  json: {
+    stringify: true,
   },
   optimizeDeps: {
     include: ["@shopify/app-bridge-react", "@shopify/polaris"],

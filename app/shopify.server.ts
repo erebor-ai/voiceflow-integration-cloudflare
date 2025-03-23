@@ -16,8 +16,13 @@ export const shopify = (context: AppLoadContext) => shopifyApp({
   scopes: ["read_products"],
   appUrl: context.cloudflare.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
-  sessionStorage: new PrismaSessionStorage(prisma(context.cloudflare.env.DATABASE_URL) as any),
-  distribution: AppDistribution.AppStore,
+  sessionStorage: new PrismaSessionStorage(
+    prisma(context.cloudflare.env.DATABASE_URL),
+    {
+      connectionRetries: 10,
+      connectionRetryIntervalMs: 5000,
+    },
+  ),  distribution: AppDistribution.AppStore,
   webhooks: {
     APP_UNINSTALLED: {
       deliveryMethod: DeliveryMethod.Http,
