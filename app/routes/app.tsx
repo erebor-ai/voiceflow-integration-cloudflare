@@ -13,7 +13,7 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   await shopify(context).authenticate.admin(request);
 
-  return { apiKey: process.env.SHOPIFY_API_KEY || "" };
+  return { apiKey: context.cloudflare.env.SHOPIFY_API_KEY || "" };
 };
 
 export default function App() {
