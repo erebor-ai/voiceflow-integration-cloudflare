@@ -8,6 +8,7 @@ import {
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import prisma from "./db.server";
 import type { AppLoadContext } from "@remix-run/node";
+import "@shopify/shopify-api/adapters/cf-worker"
 
 export const shopify = (context: AppLoadContext) => shopifyApp({
   apiKey: context.cloudflare.env.SHOPIFY_API_KEY,

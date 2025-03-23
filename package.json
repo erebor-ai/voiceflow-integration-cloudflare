@@ -29,7 +29,9 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@prisma/extension-accelerate": "^1.3.0",
-    "@remix-run/cloudflare": "^2.15.2",
+    "@remix-run/cloudflare": "^2.16.2",
+    "@remix-run/cloudflare-pages": "^2.16.2",
+    "@remix-run/css-bundle": "^2.16.2",
     "@remix-run/dev": "^2.15.2",
     "@remix-run/fs-routes": "^2.15.2",
     "@remix-run/node": "^2.15.2",
@@ -38,6 +40,7 @@
     "@shopify/app-bridge-react": "^4.1.6",
     "@shopify/polaris": "^12.0.0",
     "@shopify/shopify-app-remix": "^3.7.0",
+    "@shopify/shopify-app-session-storage-kv": "^4.0.16",
     "@shopify/shopify-app-session-storage-prisma": "^6.0.0",
     "express-rate-limit": "^7.5.0",
     "isbot": "^5.1.0",
@@ -49,7 +52,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250121.0",
+    "@cloudflare/workers-types": "^4.20250321.0",
     "@remix-run/eslint-config": "^2.7.1",
     "@remix-run/route-config": "^2.15.0",
     "@shopify/api-codegen-preset": "^1.1.1",
