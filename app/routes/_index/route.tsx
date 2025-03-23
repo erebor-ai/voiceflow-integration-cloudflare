@@ -22,10 +22,11 @@ export default function App() {
   return (
     <div className={styles.index}>
       <div className={styles.content}>
-        <h1 className={styles.heading}>GRAW - Shopify Remix App w/ Cloudflare Workers</h1>
+        <h1 className={styles.heading}>
+          Shopify Remix App with Cloudflare Workers
+        </h1>
         <p className={styles.text}>
-          Voiceflow integration with Shopify Remix and Cloudflare Workers. Check out{" "}
-          <a href="https://github.com/voiceflow/graw-ai-chatbot-integration">the repo</a> for more details.
+          A tagline about [your app] that describes your value proposition.
         </p>
         {showForm && (
           <Form className={styles.form} method="post" action="/auth/login">
