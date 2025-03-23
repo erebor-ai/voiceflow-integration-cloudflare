@@ -22,7 +22,8 @@ export const shopify = (context: AppLoadContext) => shopifyApp({
       connectionRetries: 10,
       connectionRetryIntervalMs: 5000,
     },
-  ),  distribution: AppDistribution.AppStore,
+  ),  
+  distribution: AppDistribution.AppStore,
   webhooks: {
     APP_UNINSTALLED: {
       deliveryMethod: DeliveryMethod.Http,
